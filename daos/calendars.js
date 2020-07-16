@@ -1,5 +1,6 @@
 const Calendars = require('../models/calendars');
 
+
 module.exports = {};
   
 module.exports.create = async (name) => {
@@ -10,7 +11,7 @@ module.exports.updateById= async(calendarId, calendar) => {
   return await Calendars.update({_id: calendarId}, calendar)
 };
 
-module.exports.getById = async (id) => {
+module.exports.getById = async (id, calendar) => {
   try {
     const calendar = await Calendars.findOne({ _id: id }).lean();
     return calendar;
@@ -26,7 +27,6 @@ module.exports.deleteById = async(id) => {
 module.exports.getAllCalendars = async()=> {
   try {
     const calendars = await Calendars.find({});
-    console.log(calendars);
     return calendars
   } catch (e) {
     return null;
@@ -34,12 +34,6 @@ module.exports.getAllCalendars = async()=> {
 }
 
 
-// const calendars = await Calendars.find(id);
-//     calendars.array.forEach(element => {
-//       return element
 
 
-
-
-// db.c.find({}, {_id:1}).map(function(item){ return item._id; })
 

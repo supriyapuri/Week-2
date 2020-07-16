@@ -1,5 +1,13 @@
-const { Router } = require("express");
-const router = Router();
+// const { Router } = require("express");
+// const router = Router();
+
+// const {Router2} = require('./events');
+// const events = Router2();
+
+const router = require('express').Router();
+const events = require('./events');
+
+
 
 const CalendarDAO = require('../daos/calendars');
 
@@ -25,7 +33,6 @@ router.post("/", async (req, res, next) => {
 //read - single calendar id
 
 router.get("/:id", async (req, res, next) => {
-  // const calendarId= req.params.id;
   const calendar = await CalendarDAO.getById(req.params.id);
   if (calendar) {
     res.json(calendar);
@@ -68,7 +75,7 @@ router.delete("/:id", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   
   const calendar = await CalendarDAO.getAllCalendars();
-  console.log(calendar);
+  
   if (calendar) {
     res.json(calendar);
     } 
@@ -79,7 +86,12 @@ router.get("/", async (req, res, next) => {
 
 
 
+router.use('/:calendarId/events', function(req, res, next) {
+  req.calendarId = req.params.calendarId;
+  next()
+}, events);
 
 
 
-module.exports = router;
+
+ module.exports = router;
