@@ -33,7 +33,7 @@ events.post("/", async (req, res, next) => {
 //read - single event id
 
 events.get("/:id", async (req, res, next) => {
-  const  calendar = await CalendarDAO.getById(calendarId);
+  const  calendar = await CalendarDAO.getById(req.calendarId);
   const event = await EventDAO.getById(req.params.id, calendar);
   if (event) {
     res.json(event);

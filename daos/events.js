@@ -5,7 +5,7 @@ module.exports = {};
 
   
 module.exports.create = async (name, date, calendar) => {
-  return await Events.create({ name, date});
+  return await Events.create({ name, date });
 };
 
 module.exports.updateById= async(eventId, event, calendar) => {

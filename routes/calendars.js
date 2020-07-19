@@ -31,7 +31,6 @@ router.post("/", async (req, res, next) => {
 });
 
 //read - single calendar id
-
 router.get("/:id", async (req, res, next) => {
   const calendar = await CalendarDAO.getById(req.params.id);
   if (calendar) {
@@ -44,7 +43,6 @@ router.get("/:id", async (req, res, next) => {
 
 
 // update
-
 router.put("/:id", async (req, res, next) => {
   const calendarId= req.params.id;
   const calendar = req.body;
