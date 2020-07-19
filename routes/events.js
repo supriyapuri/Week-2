@@ -19,8 +19,7 @@ events.post("/", async (req, res, next) => {
   }
   else {
     try{
-      const  calendar = await CalendarDAO.getById(req.calendarId);
-      const event = await EventDAO.create(name, date, calendar);
+      const event = await EventDAO.create(name, date, req.calendarId);
       res.json(event);
       }
     catch(e) {
@@ -33,8 +32,7 @@ events.post("/", async (req, res, next) => {
 //read - single event id
 
 events.get("/:id", async (req, res, next) => {
-  const  calendar = await CalendarDAO.getById(req.calendarId);
-  const event = await EventDAO.getById(req.params.id, calendar);
+  const event = await EventDAO.getById(req.params.id);
   if (event) {
     res.json(event);
     } 
@@ -47,7 +45,6 @@ events.get("/:id", async (req, res, next) => {
 // update
 
 events.put("/:id", async (req, res, next) => {
-  const  calendar = await CalendarDAO.getById(req.calendarId);
   const eventId= req.params.id;
   const event = req.body;
   
@@ -55,17 +52,16 @@ events.put("/:id", async (req, res, next) => {
     res.status(400).send('event is required');
   } else
   {
-    const updatedEvent= await EventDAO.updateById(eventId, event, calendar);
+    const updatedEvent= await EventDAO.updateById(eventId, event);
     res.json(updatedEvent)
   } 
 });
 
 // delete
 events.delete("/:id", async (req, res, next) => {
-  const  calendar = await CalendarDAO.getById(req.calendarId);
   const eventId = req.params.id;
   try {
-    await EventDAO.deleteById(eventId, calendar);
+    await EventDAO.deleteById(eventId);
     res.sendStatus(200);
     } catch(e){
       res.status(500).send(e.message);
@@ -76,14 +72,13 @@ events.delete("/:id", async (req, res, next) => {
 //get all
 
 events.get("/", async (req, res, next) => {
-  const  calendar = await CalendarDAO.getById(req.calendarId);
-  const event = await EventDAO.getAllEvents(calendar);
-  if (event) {
+  const event = await EventDAO.getAllEvents(req.calendarId);
+  if (event.length) {
     res.json(event);
-    } 
-    else {
+  } 
+  else {
     res.sendStatus(404);
-    }
+  }
 });
 
 

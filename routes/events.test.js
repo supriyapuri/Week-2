@@ -27,6 +27,24 @@ describe("/events", () => {
     });
   });
 
+  describe("GET (no matching result) /", () => {
+    let calendarEvent1;
+
+    beforeEach(async () => {
+        calendarEvent1 = (await request(server).post("/calendars").send({name: 'calendar1'})).body;
+    });
+
+    afterEach(async () =>{
+        const res= await request(server).delete("/calendars/" + calendarEvent1._id);
+        expect(res.statusCode).toEqual(200);
+    });
+
+    it("should return 404 if there is no id", async () => {
+      const res = await request(server).get(`/calendars/${calendarEvent1._id }+ /events/`);
+      expect(res.statusCode).toEqual(404);
+    });
+  });
+
   describe('POST( getting error if no name or date is added, no name is added or no date is added) /', () => {
     let calendarEvent1;
 
@@ -66,7 +84,6 @@ describe("/events", () => {
       const res = await request(server).get(`/calendars/${calendarEvent1._id }+ /events/` + event1._id);
       expect(res.statusCode).toEqual(200);    
       const storedEvent = res.body;
-      console.log(date);
       expect(storedEvent).toMatchObject({ 
         name: 'event1', 
         date: date,
