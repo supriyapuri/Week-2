@@ -10,7 +10,7 @@ module.exports.create = async (name, date, associatedCalendarId) => {
 };
 
 module.exports.updateById= async(eventId, event) => {
-  return await Events.update({_id: eventId}, event)
+  return await Events.updateOne({_id: eventId}, event)
 };
 
 module.exports.getById = async (id) => {

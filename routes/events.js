@@ -48,13 +48,18 @@ events.put("/:id", async (req, res, next) => {
   const eventId= req.params.id;
   const event = req.body;
   
-  if (!event || JSON.stringify(event)=== '{}'){
-    res.status(400).send('event is required');
-  } else
-  {
-    const updatedEvent= await EventDAO.updateById(eventId, event);
-    res.json(updatedEvent)
-  } 
+  try{
+    if (!event || JSON.stringify(event) === '{}'){
+      res.status(400).send('atleast name or date is required');
+    } else
+    {
+      const updatedEvent= await EventDAO.updateById(eventId, event);
+      res.json(updatedEvent)
+    } 
+} catch (e) {
+  res.status(500).send(e.message);
+}
+
 });
 
 // delete
